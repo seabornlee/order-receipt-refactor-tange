@@ -17,39 +17,51 @@ public class OrderReceipt {
 	public String buildReceipt() {
 		StringBuilder output = new StringBuilder();
 
-		// print headers
-		output.append("======Printing Orders======\n");
+		output.append(getHeaders());
+		output.append(getCustomerInformation());
+		output.append(getLineItems());
+		output.append(getTotalSalesTax());
+		output.append(getTotalPaidMoney());
 
-		// print date, bill no, customer name
-        output.append(order.getCustomerName());
-        output.append(order.getCustomerAddress());
-
-		// prints lineItems
-		double totalSalesTax = 0d;
-		double totalPaidMoney = 0d;
-		for (LineItem lineItem : order.getLineItems()) {
-			output.append(lineItem.getDescription());
-			output.append('\t');
-			output.append(lineItem.getPrice());
-			output.append('\t');
-			output.append(lineItem.getQuantity());
-			output.append('\t');
-			output.append(lineItem.totalAmount());
-			output.append('\n');
-
-			// calculate sales tax @ rate of 10%
-            double salesTax = lineItem.totalAmount() * .10;
-            totalSalesTax += salesTax;
-
-            // calculate total amount of lineItem = price * quantity + 10 % sales tax
-            totalPaidMoney += lineItem.totalAmount() + salesTax;
-		}
-
-		// prints the state tax
-		output.append("Sales Tax").append('\t').append(totalSalesTax);
-
-        // print total amount
-		output.append("Total Amount").append('\t').append(totalPaidMoney);
 		return output.toString();
 	}
+
+	private String getTotalPaidMoney() {
+		return "Total Amount" + '\t' + order.getTotalPaidMoney();
+	}
+
+	private String getTotalSalesTax() {
+		return "Sales Tax" + '\t' + order.getTotalSalesTax();
+	}
+
+	private String getLineItems() {
+		StringBuilder stringBuilder = new StringBuilder();
+		for (LineItem lineItem : order.getLineItems()) {
+			stringBuilder.append(getLineItem(lineItem));
+		}
+
+		return stringBuilder.toString();
+	}
+
+	private String getLineItem(LineItem lineItem) {
+		StringBuilder builder = new StringBuilder();
+		builder.append(lineItem.getDescription());
+		builder.append('\t');
+		builder.append(lineItem.getPrice());
+		builder.append('\t');
+		builder.append(lineItem.getQuantity());
+		builder.append('\t');
+		builder.append(lineItem.totalAmount());
+		builder.append('\n');
+		return builder.toString();
+	}
+
+	private String getCustomerInformation() {
+		return order.getCustomerName() + order.getCustomerAddress();
+	}
+
+	private String getHeaders() {
+		return "======Printing Orders======\n";
+	}
+
 }
