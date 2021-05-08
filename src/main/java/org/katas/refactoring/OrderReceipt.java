@@ -15,15 +15,13 @@ public class OrderReceipt {
 	}
 
 	public String buildReceipt() {
-		StringBuilder output = new StringBuilder();
-
-		output.append(getHeaders());
-		output.append(getCustomerInformation());
-		output.append(getLineItems());
-		output.append(getTotalSalesTax());
-		output.append(getTotalPaidMoney());
-
-		return output.toString();
+		StringBuilder builder = new StringBuilder();
+		builder.append(getHeaders());
+		builder.append(getCustomerInformation());
+		builder.append(getLineItems());
+		builder.append(getTotalSalesTax());
+		builder.append(getTotalPaidMoney());
+		return builder.toString();
 	}
 
 	private String getTotalPaidMoney() {

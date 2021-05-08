@@ -38,6 +38,9 @@ public class Order {
         for (LineItem lineItem : getLineItems()) {
 totalPaidMoney += lineItem.totalAmount() + lineItem.getSalesTax();
         }
+        if (totalPaidMoney >= 10) {
+            return totalPaidMoney * 0.9;
+        }
         return totalPaidMoney;
     }
 }
